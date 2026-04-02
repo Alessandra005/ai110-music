@@ -29,6 +29,30 @@ Some prompts to answer:
 
 You can include a simple diagram or bullet list if helpful.
 
+Real-world recommenders like Spotify combine 2 main strategies: 
+matching users with similar listening habits and and matching songs by their audio attributes. 
+This simulation will use content-based filtering, scoring every song based on how closely its features match a user's defined taste profile, then returns the top ranked results.
+
+**Song features used:**
+- `genre` 
+- `mood` (happy, chill, relaxed, etc)
+- `energy` (0.0–1.0)
+- `valence` (0.0–1.0)
+- `acousticness` (0.0–1.0)
+- `danceability` (0.0–1.0)
+- `tempo_bpm` (numeric)
+
+**UserProfile stores:**
+- `favorite_genre`
+- `favorite_mood`
+- `target_energy`
+- `target_valence`
+
+**Algorithm Recipe (preliminary):**
+- +2.0 points for genre match
+- +1.0 point for mood match
+- Similarity points for energy, valence closeness to user targets
+
 ---
 
 ## Getting Started
