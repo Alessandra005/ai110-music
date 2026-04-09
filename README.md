@@ -48,10 +48,35 @@ This simulation will use content-based filtering, scoring every song based on ho
 - `target_energy`
 - `target_valence`
 
-**Algorithm Recipe (preliminary):**
-- +2.0 points for genre match
-- +1.0 point for mood match
-- Similarity points for energy, valence closeness to user targets
+**Algorithm Recipe:**
++2.0 pts → genre match
++1.5 pts → mood match
++1.0 pts → energy closeness → 1 - abs(song_energy - target_energy)
++1.0 pts → valence closeness → 1 - abs(song_valence - target_valence)
++0.5 pts → danceability closeness
++0.5 pts → acousticness closeness
+
+```mermaid
+graph TD
+    A[User Preferences] --> B[Loop Through All Songs]
+    B --> C[Score Each Song]
+    C --> D{Genre Match?}
+    D -->|Yes| E[+2.0 pts]
+    D -->|No| F[+0 pts]
+    E --> G[Check Mood Match]
+    F --> G
+    G --> H[Add Energy & Valence Closeness Score]
+    H --> I[Store Song + Score]
+    I --> J{More Songs?}
+    J -->|Yes| B
+    J -->|No| K[Sort by Score]
+    K --> L[Return Top K Results]
+```
+
+## Terminal Output
+
+### Default Profile (Happy Pop)
+![Default Profile Results](/screenshots/pic1.png)
 
 ---
 
