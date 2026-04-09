@@ -75,8 +75,14 @@ graph TD
 
 ## Terminal Output
 
-### Default Profile (Happy Pop)
+### Default Profile 1: Happy Pop
 ![Default Profile Results](/screenshots/pic1.png)
+
+### Profile 2: Chill Lofi
+![Chill Lofi Results](/screenshots/profile2.png)
+
+### Profile 3: Deep Intense Rock
+![Deep Intense Rock Results](/screenshots/profile3.png)
 
 ---
 
@@ -122,6 +128,18 @@ Use this section to document the experiments you ran. For example:
 - What happened when you changed the weight on genre from 2.0 to 0.5
 - What happened when you added tempo or valence to the score
 - How did your system behave for different types of users
+
+### Weight Shift: Energy vs Genre
+I doubled the energy weight (1.0 to 2.0) and halved the genre weight 
+(2.0 to 1.0) on the Pop profile.
+
+**Result:** Rooftop Lights jumped from 3rd to 2nd place because its 
+energy matched closely. Gym Hero dropped because it lost the genre bonus. 
+This showed that genre was doing most of the heavy lifting in the original 
+scoring, reducing it gave energy-based matches more room to shine.
+
+**Conclusion:** The original weights make genre too dominant. A more 
+balanced system would give energy and valence more influence.
 
 ---
 

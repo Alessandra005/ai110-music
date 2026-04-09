@@ -16,8 +16,34 @@ def main() -> None:
     songs = load_songs("data/songs.csv") 
 
     # Starter example profile
-    user_prefs = {"favorite_genre": "pop", "favorite_mood": "happy", "target_energy": 0.8, "target_valence": 0.75, "target_danceability": 0.7, "target_acousticness": 0.2
-}
+    user_prefs = {
+        "favorite_genre": "pop",
+        "favorite_mood": "happy",
+        "target_energy": 0.8,
+        "target_valence": 0.75,
+        "target_danceability": 0.7,
+        "target_acousticness": 0.2
+    }
+
+    # Profile 2: Chill Lofi
+    # user_prefs = {
+    #     "favorite_genre": "lofi",
+    #     "favorite_mood": "chill",
+    #     "target_energy": 0.35,
+    #     "target_valence": 0.55,
+    #     "target_danceability": 0.4,
+    #     "target_acousticness": 0.7
+    # }
+
+    # Profile 3: Deep Intense Rock
+    # user_prefs = {
+    #     "favorite_genre": "rock",
+    #     "favorite_mood": "intense",
+    #     "target_energy": 0.92,
+    #     "target_valence": 0.45,
+    #     "target_danceability": 0.5,
+    #     "target_acousticness": 0.1
+    # }
 
     recommendations = recommend_songs(user_prefs, songs, k=5)
 
