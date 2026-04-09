@@ -10,6 +10,14 @@
 
 This system suggests 5 songs from a small catalog based on a user's preferred genre, mood, energy, and valence. It is built for classroom exploration only, not for real users or production use.
 
+## 2b. Goal / Task
+
+The goal is to take a user taste profile and return the top 5 songs from the catalog that best match their preferences. It predicts "what song fits this person right now" based on genre, mood, and audio features.
+
+## 2c. Non-Intended Use
+
+This system is not meant for real music platforms or actual users. It should not be used to make decisions about what music gets promoted or recommended at scale. It was built to learn how recommenders work, not to replace one.
+
 ---
 
 ## 3. How the Model Works  
