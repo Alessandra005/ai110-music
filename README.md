@@ -2,39 +2,16 @@
 
 ## Project Summary
 
-In this project you will build and explain a small music recommender system.
-
-Your goal is to:
-
-- Represent songs and a user "taste profile" as data
-- Design a scoring rule that turns that data into recommendations
-- Evaluate what your system gets right and wrong
-- Reflect on how this mirrors real world AI recommenders
-
-Replace this paragraph with your own summary of what your version does.
+This project is a content-based music recommender built in Python. It takes a user taste profile and scores every song in a catalog based on how closely it matches. The top 5 results are returned with explanations for why each song was recommended. It also supports multiple scoring modes so you can prioritize genre, mood, or energy differently.
 
 ---
 
 ## How The System Works
 
-Explain your design in plain language.
-
-Some prompts to answer:
-
-- What features does each `Song` use in your system
-  - For example: genre, mood, energy, tempo
-- What information does your `UserProfile` store
-- How does your `Recommender` compute a score for each song
-- How do you choose which songs to recommend
-
-You can include a simple diagram or bullet list if helpful.
-
-Real-world recommenders like Spotify combine 2 main strategies: 
-matching users with similar listening habits and and matching songs by their audio attributes. 
-This simulation will use content-based filtering, scoring every song based on how closely its features match a user's defined taste profile, then returns the top ranked results.
+Real-world recommenders like Spotify combine two main strategies: matching users with similar listening habits and matching songs by their audio attributes. This simulation uses content-based filtering, scoring every song based on how closely its features match a user's defined taste profile, then returns the top ranked results.
 
 **Song features used:**
-- `genre` 
+- `genre`
 - `mood` (happy, chill, relaxed, etc)
 - `energy` (0.0–1.0)
 - `valence` (0.0–1.0)
@@ -47,14 +24,18 @@ This simulation will use content-based filtering, scoring every song based on ho
 - `favorite_mood`
 - `target_energy`
 - `target_valence`
+- `target_danceability`
+- `target_acousticness`
 
 **Algorithm Recipe:**
-+2.0 pts → genre match
-+1.5 pts → mood match
-+1.0 pts → energy closeness → 1 - abs(song_energy - target_energy)
-+1.0 pts → valence closeness → 1 - abs(song_valence - target_valence)
-+0.5 pts → danceability closeness
-+0.5 pts → acousticness closeness
+- +2.0 pts → genre match
+- +1.5 pts → mood match
+- +1.0 pts → energy closeness (1 - abs(song_energy - target_energy))
+- +1.0 pts → valence closeness (1 - abs(song_valence - target_valence))
+- +0.5 pts → danceability closeness
+- +0.5 pts → acousticness closeness
+
+**Potential bias:** This system may over-prioritize genre, causing it to miss strong mood or energy matches from different genres.
 
 ```mermaid
 graph TD
@@ -73,16 +54,18 @@ graph TD
     K --> L[Return Top K Results]
 ```
 
+---
+
 ## Terminal Output
 
-### Default Profile 1: Happy Pop
-![Default Profile Results](/screenshots/pic1.png)
+### Profile 1: Happy Pop
+![Happy Pop Results](screenshots/pic1.png)
 
 ### Profile 2: Chill Lofi
-![Chill Lofi Results](/screenshots/profile2.png)
+![Chill Lofi Results](screenshots/profile2.png)
 
 ### Profile 3: Deep Intense Rock
-![Deep Intense Rock Results](/screenshots/profile3.png)
+![Deep Intense Rock Results](screenshots/profile3.png)
 
 ---
 
@@ -92,12 +75,13 @@ graph TD
 
 1. Create a virtual environment (optional but recommended):
 
-   ```bash
-   python -m venv .venv
-   source .venv/bin/activate      # Mac or Linux
-   .venv\Scripts\activate         # Windows
+```bash
+python -m venv .venv
+source .venv/bin/activate      # Mac or Linux
+.venv\Scripts\activate         # Windows
+```
 
-2. Install dependencies
+2. Install dependencies:
 
 ```bash
 pip install -r requirements.txt
@@ -109,57 +93,49 @@ pip install -r requirements.txt
 python -m src.main
 ```
 
-### Running Tests
+To switch scoring modes, open `src/main.py` and change:
+```python
+strategy_name = "genre-first"  # or "mood-first" or "energy-focused"
+```
 
-Run the starter tests with:
+### Running Tests
 
 ```bash
 pytest
 ```
 
-You can add more tests in `tests/test_recommender.py`.
-
 ---
 
 ## Experiments You Tried
 
-Use this section to document the experiments you ran. For example:
-
-- What happened when you changed the weight on genre from 2.0 to 0.5
-- What happened when you added tempo or valence to the score
-- How did your system behave for different types of users
-
 ### Weight Shift: Energy vs Genre
-I doubled the energy weight (1.0 to 2.0) and halved the genre weight 
-(2.0 to 1.0) on the Pop profile.
+I doubled the energy weight (1.0 to 2.0) and halved the genre weight (2.0 to 1.0) on the Happy Pop profile.
 
-**Result:** Rooftop Lights jumped from 3rd to 2nd place because its 
-energy matched closely. Gym Hero dropped because it lost the genre bonus. 
-This showed that genre was doing most of the heavy lifting in the original 
-scoring, reducing it gave energy-based matches more room to shine.
+**Result:** Rooftop Lights jumped from 3rd to 2nd place because its energy matched closely. Gym Hero dropped because it lost the genre bonus. This showed that genre was doing most of the heavy lifting in the original scoring, reducing it gave energy-based matches more room to shine.
 
-**Conclusion:** The original weights make genre too dominant. A more 
-balanced system would give energy and valence more influence.
+**Conclusion:** The original weights make genre too dominant. A more balanced system would give energy and valence more influence.
+
+### Challenge 2: Multiple Scoring Modes
+Added three scoring strategies using the Strategy pattern:
+- **Genre-First**: Boosts genre weight to 2.5 — genre dominates results
+- **Mood-First**: Boosts mood weight to 2.5 — unexpected genres appear if mood matches
+- **Energy-Focused**: Boosts energy weight to 2.0 — high energy songs win regardless of genre
 
 ---
 
 ## Limitations and Risks
 
-Summarize some limitations of your recommender.
-
-Examples:
-
-- It only works on a tiny catalog
-- It does not understand lyrics or language
-- It might over favor one genre or mood
-
-You will go deeper on this in your model card.
+- Only works on a small catalog of 18 songs
+- Does not understand lyrics or song context
+- Genre and mood require exact string matches 
+- Over-favors genre by default due to the +2.0 bonus
+- Has no memory, it cannot learn from what the user liked or skipped
 
 ---
 
 ## Reflection
 
-Read and complete `model_card.md`:
+Building this made me realize how much a single number can control an entire system. The genre weight basically decided every result until I started experimenting with it. Real recommenders like Spotify feel smart, but at the end of the day they are doing the same thing just with way more data and much more carefully tuned weights. Bias can sneak in through something as simple as how many songs of each genre are in the dataset.
 
 [**Model Card**](model_card.md)
 
